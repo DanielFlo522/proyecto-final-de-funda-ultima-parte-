@@ -1,21 +1,19 @@
 #include <iostream>
-#include <string>
-#include <fstream>
 #include <vector>
-#include <iomanip>
+#include <string>
+#include <iomanip> // Librería necesaria para formatear los decimales (ej. $1.50)
 
 using namespace std;
 
+// Estructura que infiero que tenías creada arriba de tu código
 struct Producto {
     string nombre;
     double precio;
-
 };
 
-int main(){
-    cout << fixed << setprecision(2);
-
-     vector<Producto> productos = {
+int main() {
+    // 1. Inicializar la lista de productos y precios según tu consola
+    vector<Producto> productos = {
         {"Cafe con Leche", 1.50},
         {"Medialuna", 0.80},
         {"Sandwich de Jamon y Queso", 3.00},
@@ -24,104 +22,86 @@ int main(){
         {"Jugo Natural", 2.20},
         {"Porcion de Torta", 2.50}
     };
-    
-    //Dantos del cliente 
-string Nombredecliente;
-int carnetEstudiante;
 
-cout << "===================================" << endl;
-cout <<  "Cafeteria Universitaria - Registro" << endl;
-cout << "===================================" << endl;
-cout << "Ingrese el nombre del cliente:";
-getline(cin, Nombredecliente);
-cout << "Ingrese el carten del estudiante:";
-cin >> carnetEstudiante;
+    string Nombredecliente;
+    string carnetEstudiante;
 
-// Arreglos para cantidad de productos 
-vector<int> cantidadseleccion(7, 0);
+    // 2. Solicitar datos del cliente
+    cout << "Ingrese el nombre del cliente: ";
+    // cin.ignore(); // Quita las barras '//' de esta línea si antes de pedir el nombre hubo algún 'cin >>'
+    getline(cin, Nombredecliente);
+
+    cout << "Ingrese el carnet del estudiante: ";
+    cin >> carnetEstudiante;
+    cout << endl;
+
+    // 3. Vectores de tu código original
+    vector<int> cantidadseleccion(7, 0);
     vector<double> precioproducto(7);
     vector<string> comidaproducto(7);
 
-    for (int i = 0; i < 7; ++i) {
+    cout << "Seleccione las cantidades para los siguientes productos:\n";
+    
+    // 4. Llenar vectores y pedir cantidades
+    for (int i = 0; i < 7; i++) {
         comidaproducto[i] = productos[i].nombre;
         precioproducto[i] = productos[i].precio;
 
-        cout << "\nSeleccione las cantidades para los sigientes productos:" << endl;
-        double Totalcompra = 0.0;
-        for (int i = 0; i = 7; i++){
-            cout << "- " << comidaproducto[i] << " ($" << precioproducto[i] << "): ";
+        // Se imprime el menú dinámicamente con sus precios
+        cout << i + 1 << ". " << comidaproducto[i] << " ($" << fixed << setprecision(2) << precioproducto[i] << "): ";
         cin >> cantidadseleccion[i];
-        if (cantidadseleccion[i] < 0) {
-            cantidadseleccion[i] = 0;
-        }
+    }
 
+    double descuento = 0.0;
+    cout << "\nIngrese el porcentaje de descuento (0 a 100): ";
+    cin >> descuento;
+
+    // 5. VALIDACIÓN: ¿Por qué no se generaba la factura?
+    // Aquí validamos que el descuento sea real (entre 0 y 100)
+    if (descuento < 0 || descuento > 100) {
+        cout << "\nNo se pudo generar la factura. Porcentaje de descuento invalido.\n";
+    } else {
+        // 6. Calcular el subtotal de la compra
+        double Totalcompra = 0.0;
+        for (int i = 0; i < 7; i++) {
             Totalcompra += cantidadseleccion[i] * precioproducto[i];
         }
 
-        //Descuento
-        double descuentoAplicado = 0.0;
-        count << "\nIngrese el porcentaje de descuento (0 a 100):";
-        double tempDescuento;
-        cin >> tempDescuento;
+        // Si el cliente puso '0' en todo, no hay factura que generar
+        if (Totalcompra == 0.0) {
+            cout << "\nNo se pudo generar la factura. No selecciono ningun producto.\n";
+        } else {
+            // 7. Aplicar la matemática del descuento e Imprimir
+            double montoDescuento = Totalcompra * (descuento / 100.0);
+            double totalFinal = Totalcompra - montoDescuento;
 
-        // Aprobacion de descuento
-        if (tempDescuento >= 0 && tempDescuento <= 100) {
-        descuentoAplicado = tempDescuento / 100.0;
-    }
-     double facturaTotal = Totalcompra * (1.0 - descuentoAplicado);
-
-     if
-     string nombreArchivo = Nombrecliente + "_" + to_string(carnetEstudiante) + ".txt";
-
-      ofstream archivo(nombreArchivo);
-
-      if(archivo.is_open()){
-         archivo << "=========================================" << endl;
-        archivo << "CAFETERIA UNIVERSITARIA" << endl;
-        archivo << "=========================================" << endl;
-        archivo << "Cliente: " << Nombrecliente << endl;
-        archivo << "Carnet: " << carnetEstudiante << endl;
-        archivo << "=========================================" << endl;
-        archivo << left << setw(25) << "PRODUCTO" << " | " << setw(5) << "CANT." << " | " << "TOTAL ITEM" << endl;
-        archivo << "-----------------------------------------" << endl;
-       
-        for (int i = 0; i < 7; ++i) {
-             if (cantidadseleccion[i] > 0) {
-                
-                double subtotalItem = cantidadseleccion[i] * precioproducto[i];
-
-                
-                archivo << left << setw(25) << comidaproducto[i] 
-                        << " | " << setw(5) << cantidadseleccion[i] 
-                        << " | $" << fixed << setprecision(2) << subtotalItem << endl;
+            cout << "\n========================================\n";
+            cout << "            FACTURA DE COMPRA\n";
+            cout << "========================================\n";
+            cout << "Cliente: " << Nombredecliente << "\n";
+            cout << "Carnet:  " << carnetEstudiante << "\n";
+            cout << "----------------------------------------\n";
+            
+            
+            for (int i = 0; i < 7; i++) {
+                if (cantidadseleccion[i] > 0) {
+                    cout << cantidadseleccion[i] << "x " << comidaproducto[i] 
+                         << " - $" << fixed << setprecision(2) << (cantidadseleccion[i] * precioproducto[i]) << "\n";
+                }
             }
-             archivo << "-----------------------------------------" << endl;
-        archivo << "Subtotal sin descuento: $" << fixed << setprecision(2) << Totalcompra << endl;
-        archivo << "Descuento aplicado: " << fixed << setprecision(1) << (descuentoAplicado * 100.0) << "%" << endl;
-        archivo << "Precio final: $" << fixed << setprecision(2) << facturaTotal << endl;
-        archivo << "=========================================" << endl;
-        archivo << "¡Gracias por su compra!" << endl;
-        archivo << "=========================================" << endl;
-
-        archivo.close();
-
-         cout << "\nFactura " << nombreArchivo << " generada con exito." << endl;
-    } else {
-        
-        cout << "\nNo se pudo generar la factura" << endl;
+            
+            cout << "----------------------------------------\n";
+            cout << "Subtotal:   $" << fixed << setprecision(2) << Totalcompra << "\n";
+            cout << "Descuento (" << descuento << "%): -$" << fixed << setprecision(2) << montoDescuento << "\n";
+            cout << "TOTAL A PAGAR: $" << fixed << setprecision(2) << totalFinal << "\n";
+            cout << "========================================\n";
+        }
     }
-      cout << "\nPresione Enter para salir...";
-    cin.ignore();
-    cin.get();
-     
+
+    // 8. Salida limpia
+    cout << "\nPresione Enter para salir...\n";
+    cin.ignore(); 
+    cin.get();    
+
     return 0;
-      }
-
-      
-
-
-
-
-
-
 }
