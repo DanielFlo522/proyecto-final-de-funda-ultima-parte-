@@ -1,18 +1,18 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <iomanip> // Librería necesaria para formatear los decimales (ej. $1.50)
+#include <iomanip> 
 
 using namespace std;
 
-// Estructura que infiero que tenías creada arriba de tu código
+
 struct Producto {
     string nombre;
     double precio;
 };
 
 int main() {
-    // 1. Inicializar la lista de productos y precios según tu consola
+    
     vector<Producto> productos = {
         {"Cafe con Leche", 1.50},
         {"Medialuna", 0.80},
@@ -26,28 +26,28 @@ int main() {
     string Nombredecliente;
     string carnetEstudiante;
 
-    // 2. Solicitar datos del cliente
+  
     cout << "Ingrese el nombre del cliente: ";
-    // cin.ignore(); // Quita las barras '//' de esta línea si antes de pedir el nombre hubo algún 'cin >>'
+   
     getline(cin, Nombredecliente);
 
     cout << "Ingrese el carnet del estudiante: ";
     cin >> carnetEstudiante;
     cout << endl;
 
-    // 3. Vectores de tu código original
+    
     vector<int> cantidadseleccion(7, 0);
     vector<double> precioproducto(7);
     vector<string> comidaproducto(7);
 
     cout << "Seleccione las cantidades para los siguientes productos:\n";
     
-    // 4. Llenar vectores y pedir cantidades
+   
     for (int i = 0; i < 7; i++) {
         comidaproducto[i] = productos[i].nombre;
         precioproducto[i] = productos[i].precio;
 
-        // Se imprime el menú dinámicamente con sus precios
+        
         cout << i + 1 << ". " << comidaproducto[i] << " ($" << fixed << setprecision(2) << precioproducto[i] << "): ";
         cin >> cantidadseleccion[i];
     }
@@ -56,22 +56,21 @@ int main() {
     cout << "\nIngrese el porcentaje de descuento (0 a 100): ";
     cin >> descuento;
 
-    // 5. VALIDACIÓN: ¿Por qué no se generaba la factura?
-    // Aquí validamos que el descuento sea real (entre 0 y 100)
+    
     if (descuento < 0 || descuento > 100) {
         cout << "\nNo se pudo generar la factura. Porcentaje de descuento invalido.\n";
     } else {
-        // 6. Calcular el subtotal de la compra
+       
         double Totalcompra = 0.0;
         for (int i = 0; i < 7; i++) {
             Totalcompra += cantidadseleccion[i] * precioproducto[i];
         }
 
-        // Si el cliente puso '0' en todo, no hay factura que generar
+       
         if (Totalcompra == 0.0) {
             cout << "\nNo se pudo generar la factura. No selecciono ningun producto.\n";
         } else {
-            // 7. Aplicar la matemática del descuento e Imprimir
+            
             double montoDescuento = Totalcompra * (descuento / 100.0);
             double totalFinal = Totalcompra - montoDescuento;
 
@@ -98,7 +97,7 @@ int main() {
         }
     }
 
-    // 8. Salida limpia
+    
     cout << "\nPresione Enter para salir...\n";
     cin.ignore(); 
     cin.get();    
