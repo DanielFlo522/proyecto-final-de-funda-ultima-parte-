@@ -9,6 +9,7 @@ using namespace std;
 struct Producto {
     string nombre;
     double precio;
+    
 };
 
 int main() {
@@ -23,8 +24,9 @@ int main() {
         {"Porcion de Torta", 2.50}
     };
 
-    string Nombredecliente;
+  string Nombredecliente;
     string carnetEstudiante;
+
 
   
     cout << "Ingrese el nombre del cliente: ";
@@ -51,7 +53,8 @@ int main() {
         cout << i + 1 << ". " << comidaproducto[i] << " ($" << fixed << setprecision(2) << precioproducto[i] << "): ";
         cin >> cantidadseleccion[i];
     }
-
+    
+    //Descuento
     double descuento = 0.0;
     cout << "\nIngrese el porcentaje de descuento (0 a 100): ";
     cin >> descuento;
@@ -75,7 +78,7 @@ int main() {
             double totalFinal = Totalcompra - montoDescuento;
 
             cout << "\n========================================\n";
-            cout << "            FACTURA DE COMPRA\n";
+            cout << "            CAETERIA UNIVERSITARIA\n";
             cout << "========================================\n";
             cout << "Cliente: " << Nombredecliente << "\n";
             cout << "Carnet:  " << carnetEstudiante << "\n";
